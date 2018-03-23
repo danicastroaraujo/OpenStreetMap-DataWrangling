@@ -14,10 +14,39 @@ I chose this area because this is the city I currently live in. It would be nice
 
 ### Overview of the data
 
-- The file has **280 MB**. 
+- The file has **280 MB. 
 
-- Number of unique users that have contributed to the map: 1,703
+- Number of unique users that have contributed to the map: **1703
 
+'''
+import xml.etree.cElementTree as ET
+
+def get_user(element):
+
+    #Gets users id from an element 
+    #Arg: element: An element from the OpenStreetMap data
+    #Returns: users: A set of the user ids
+    
+    users = set([])
+    if 'uid' in element.keys():
+        users.add(element.attrib['uid'])
+    return users
+    
+
+def process_map(filename):
+    
+    #Parses document 
+    #Args: filename: OpenStreetMap data
+    #Returns: users: A set of the user ids
+    
+    users = set([])
+    for _, element in ET.iterparse(filename):
+        users.update(get_user(element))
+    return users
+
+users = process_map('rj_map.osm')
+print(len(users))
+'''
 https://github.com/danicastroaraujo/OpenStreetMap-DataWrangling/blob/master/number_users.py
 
 - Number of nodes and ways: 
