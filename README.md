@@ -86,7 +86,7 @@ pprint.pprint(tags)
 ```
 https://github.com/danicastroaraujo/OpenStreetMap-DataWrangling/blob/master/Interparse.py
 
-- Number of "k" values for each "<tag>"
+- Number of "k" values for each <tag>
 
 ```python 
 import xml.etree.cElementTree as ET
