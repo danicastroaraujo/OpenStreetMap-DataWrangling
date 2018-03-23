@@ -16,7 +16,7 @@ I chose this area because this is the city I currently live in. It would be nice
 
 - The file has **280 MB**. 
 
-- Number of unique users that have contributed to the map: **1703**
+- Number of ```unique users``` that have contributed to the map: **1703**
 
 ```python 
 import xml.etree.cElementTree as ET
@@ -49,7 +49,7 @@ print(len(users))
 
 https://github.com/danicastroaraujo/OpenStreetMap-DataWrangling/blob/master/number_users.py
 
-- Number of tags
+- Number of ```tags```
 
 ```python 
 import xml.etree.cElementTree as ET
@@ -86,7 +86,7 @@ pprint.pprint(tags)
 ```
 https://github.com/danicastroaraujo/OpenStreetMap-DataWrangling/blob/master/Interparse.py
 
-- Number of "k" values for each <tag>
+- Number of ```k``` values for each ```tag```
 
 ```python 
 import xml.etree.cElementTree as ET
