@@ -14,9 +14,9 @@ I chose this area because this is the city I currently live in. It would be nice
 
 ### Overview of the data
 
-- The file has **280 MB. 
+- The file has **280 MB**. 
 
-- Number of unique users that have contributed to the map: **1703
+- Number of unique users that have contributed to the map: **1703**
 
 ```python 
 import xml.etree.cElementTree as ET
@@ -42,6 +42,11 @@ def process_map(filename):
 users = process_map('rj_map.osm')
 print(len(users))
 ```
+
+```python 
+1703
+```
+
 https://github.com/danicastroaraujo/OpenStreetMap-DataWrangling/blob/master/number_users.py
 
 - Number of nodes and ways: 
