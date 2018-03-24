@@ -137,22 +137,18 @@ https://github.com/danicastroaraujo/OpenStreetMap-DataWrangling/blob/master/tag_
 
 I noticed four main problems with the data, which I will discuss in the following order. Just keep in mind that names are in Portuguese, and thus the street names are called "Rua XXX", translating "Street XXX", and not " XXX Street" (the street types come first).
 
-### 1. Over-abbreviated street names 
+### 1. Over-abbreviated / Inconsistent street names 
 
 Some Examples:
 
 ```Av``` and ```Av.``` meaning ```Avenida```
-```Pça``` and ```Pça``` meaning ```Praça```
-```R.``` meaning ```Rua```
 
-### 2. Inconsistent Street Names (Incorrect writing)
+```Pça``` , ```Pça``` and ```Praca``` meaning ```Praça```
 
-Some examples:
+```R.```, ```Ruo``` and ```Rue``` meaning ```Rua```
 
-```Ruo```, ```Rue``` and ```Ruas``` meaning ```Rua```
-```Praca``` meaning ```Praça```
 
-### 3. Street Type missing (very common problem). 
+### 2. Street Type missing (very common problem). 
 
 See some examples bellow. All of them should have the street type before, i.e.,  "Rua …." or "Avenida ….." .
 
@@ -168,7 +164,7 @@ See some examples bellow. All of them should have the street type before, i.e., 
  'Augusta': {'Augusta Candiani'}, etc
  ```
  
-### 4. Similar key tags for differente names
+### 3. Similar key tags for differente names
 
 Some examples:
 
@@ -176,19 +172,19 @@ Some examples:
 ```CEP_LE``` vs ```cep:impar```  vs ```zip_left```
 ```Contact_phone``` vs ```phone```
 
-### 5. Inconsistent postal codes
+### 4. Inconsistent postal codes
 
 Example:
 
 ```22410-000``` vs ```22410000```
 
-### 6. Inconsistent contact phones
+### 5. Inconsistent contact phones
 
 ```+55-21-9999-9999``` vs ```(21) 9999-9999``` vs ```9999-9999```, etc.
 
 ## Solving the problems
 
-### 1. Over-abbreviated street names 
+### 1. Over-abbreviated / Inconsistent street names 
 
 ```python
 import xml.etree.cElementTree as ET
