@@ -2,7 +2,7 @@
 
 This is a Udacity project for the module "Data Wrangling" of the "Data Science for Business" course. The goal of this project was to use data munging techniques to clean the OpenStreetMap data for Rio de Janeiro, RJ, Brazil.
 
-### Map Area
+## Map Area
 
 Rio de Janeiro, RJ, Brazil 
 
@@ -12,7 +12,7 @@ https://overpass-api.de/api/map?bbox=-43.7997,-23.1157,-43.0959,-22.7129
 
 I chose this area because this is the city I currently live in. It would be nice to have the opportunity to contribute to its improvement. 
 
-### Overview of the data
+## Overview of the data
 
 - The file has **280 MB**. 
 
@@ -133,11 +133,11 @@ problem sub name
 ```
 https://github.com/danicastroaraujo/OpenStreetMap-DataWrangling/blob/master/tag_types_v2.py
 
-### Problems Encountered in the Map
+## Problems Encountered in the Map
 
 I noticed four main problems with the data, which I will discuss in the following order. Just keep in mind that names are in Portuguese, and thus the street names are called "Rua XXX", translating "Street XXX", and not " XXX Street" (the street types come first).
 
-1. Over-abbreviated street names 
+### 1. Over-abbreviated street names 
 
 Some Examples:
 
@@ -145,14 +145,14 @@ Some Examples:
 ```Pça``` and ```Pça``` meaning ```Praça```
 ```R.``` meaning ```Rua```
 
-2. Inconsistent Street Names (Incorrect writing)
+### 2. Inconsistent Street Names (Incorrect writing)
 
 Some examples:
 
 ```Ruo```, ```Rue``` and ```Ruas``` meaning ```Rua```
 ```Praca``` meaning ```Praça```
 
-3. Street Type missing (very common problem). 
+### 3. Street Type missing (very common problem). 
 
 See some examples bellow. All of them should have the street type before, i.e.,  "Rua …." or "Avenida ….." .
 
@@ -168,7 +168,7 @@ See some examples bellow. All of them should have the street type before, i.e., 
  'Augusta': {'Augusta Candiani'}, etc
  ```
  
-4. Similar key tags for differente names
+### 4. Similar key tags for differente names
 
 Some examples:
 
@@ -176,12 +176,12 @@ Some examples:
 ```CEP_LE``` vs ```cep:impar```  vs ```zip_left```
 ```Contact_phone``` vs ```phone```
 
-5. Inconsistent postal codes
+### 5. Inconsistent postal codes
 
 Example:
 
 ```22410-000``` vs ```22410000```
 
-6. Inconsistent contact phones
+### 6. Inconsistent contact phones
 
 ```+55-21-9999-9999``` vs ```(21) 9999-9999``` vs ```9999-9999```, etc.
