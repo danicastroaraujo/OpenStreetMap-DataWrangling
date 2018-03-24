@@ -185,3 +185,9 @@ Example:
 ### 6. Inconsistent contact phones
 
 ```+55-21-9999-9999``` vs ```(21) 9999-9999``` vs ```9999-9999```, etc.
+
+## Solving the problems
+
+### 1. Over-abbreviated street names 
+
+
