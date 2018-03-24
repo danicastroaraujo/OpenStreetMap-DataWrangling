@@ -131,4 +131,57 @@ problem Conjunto Residencial
 problem sub name
 {'lower': 522194, 'lower_colon': 50664, 'other': 22223, 'problemchars': 2}
 ```
+https://github.com/danicastroaraujo/OpenStreetMap-DataWrangling/blob/master/tag_types_v2.py
 
+### Problems Encountered in the Map
+
+I noticed four main problems with the data, which I will discuss in the following order. Just keep in mind that names are in Portuguese, and thus the street names are called "Rua XXX", translating "Street XXX", and not " XXX Street" (the street types come first).
+
+1. Over-abbreviated street names 
+
+Some Examples:
+
+```Av``` and ```Av.``` meaning ```Avenida```
+```Pça``` and ```Pça``` meaning ```Praça```
+```R.``` meaning ```Rua```
+
+2. Inconsistent Street Names (Incorrect writing)
+
+Some examples:
+
+```Ruo```, ```Rue``` and ```Ruas``` meaning ```Rua```
+```Praca``` meaning ```Praça```
+
+3. Street Type missing (very common problem). 
+
+See some examples bellow. All of them should have the street type before, i.e.,  "Rua …." or "Avenida ….." .
+
+```
+{'15': {'15 de Novembro'},
+ '199': {'199'},
+ 'Afredo': {'Afredo Ceschiatti'},
+ 'Aires': {'Aires Itabaiana'},
+ 'Alfredo': {'Alfredo Ceschiatti'},
+ 'Apurinãs': {'Apurinãs'},
+ 'Arquias': {'Arquias Cordeiro'},
+ 'Assis': {'Assis Bueno'},
+ 'Augusta': {'Augusta Candiani'}, etc
+ ```
+ 
+4. Similar key tags for differente names
+
+Some examples:
+
+```CEP_LD``` vs ```cep:par``` vs ```zip_right```
+```CEP_LE``` vs ```cep:impar```  vs ```zip_left```
+```Contact_phone``` vs ```phone```
+
+5. Inconsistent postal codes
+
+Example:
+
+```22410-000``` vs ```22410000```
+
+6. Inconsistent contact phones
+
+```+55-21-9999-9999``` vs ```(21) 9999-9999``` vs ```9999-9999```, etc.
