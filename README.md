@@ -1,6 +1,6 @@
 # OpenStreetMap Data Case Study
 
-This is a Udacity project for the module "Data Wrangling" of the "Data Science for Business" course. The goal of this project was to use data munging techniques to clean the OpenStreetMap data for Rio de Janeiro, RJ, Brazil.
+This is a Udacity project for the module "Data Wrangling" of the "Data Science for Business" course. The goal of this project is to clean the OpenStreetMap data for Rio de Janeiro, RJ, Brazil.
 
 ## Map Area
 
