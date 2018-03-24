@@ -169,7 +169,9 @@ See some examples bellow. All of them should have the street type before, i.e., 
 Some examples:
 
 ```CEP_LD``` vs ```cep:par``` vs ```zip_right```
+
 ```CEP_LE``` vs ```cep:impar```  vs ```zip_left```
+
 ```Contact_phone``` vs ```phone```
 
 ### 4. Inconsistent postal codes
@@ -276,3 +278,7 @@ for st_type, ways in st_types.items():
 ```
 
 https://github.com/danicastroaraujo/OpenStreetMap-DataWrangling/blob/master/Update_Street_Types.py
+
+## References
+
+https://forum.openstreetmap.org/viewtopic.php?id=61604
