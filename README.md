@@ -278,3 +278,5 @@ for st_type, ways in st_types.items():
         except KeyError:
             pass
 ```
+
+https://github.com/danicastroaraujo/OpenStreetMap-DataWrangling/blob/master/Update_Street_Types.py
