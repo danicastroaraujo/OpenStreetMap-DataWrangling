@@ -148,7 +148,7 @@ Some Examples:
 ```R.```, ```Ruo``` and ```Rue``` meaning ```Rua```
 
 
-### 2. Street Type missing (very common problem). 
+### 2. Street Type missing 
 
 See some examples bellow. All of them should have the street type before, i.e.,  "Rua …." or "Avenida ….." .
 
@@ -164,15 +164,15 @@ See some examples bellow. All of them should have the street type before, i.e., 
  'Augusta': {'Augusta Candiani'}, etc
  ```
  
-### 3. Similar key tags for differente names
+### 3. Different key tags with the same meaning for postal codes
 
 Some examples:
 
-```CEP_LD``` vs ```cep:par``` vs ```zip_right```
+```CEP_LD``` vs ```cep:par``` vs ```zip:right```
 
-```CEP_LE``` vs ```cep:impar```  vs ```zip_left```
+```CEP_LE``` vs ```cep:impar```  vs ```zip:left```
 
-```Contact_phone``` vs ```phone```
+```addr:zipcode``` vs ```addr:postcode```
 
 ### 4. Inconsistent postal codes
 
@@ -278,6 +278,42 @@ for st_type, ways in st_types.items():
 ```
 
 https://github.com/danicastroaraujo/OpenStreetMap-DataWrangling/blob/master/Update_Street_Types.py
+
+### 2. Street Type missing 
+
+### 3. Different key tags with the same meaning for Postcodes
+
+```python
+import xml.etree.cElementTree as ET
+
+#Parses file and corrects the not expected zip keys
+#Args: 
+    #osmfile: OpenStreetMap data
+    #mapping: mapping dict with the problem types and the write ones
+#Returns: street_types: A dict with the problem street types
+    
+OSMFILE = "rj_map.osm"
+
+mapping = { 
+           "CEP_LD": "zip:right",
+           "CEP_LE": "zip:left",
+           "cep:par": "zip:right",
+           "cep:impar": "zip:left",
+           "addr:zipcode": "addr:postcode"
+            }
+
+def update(osmfile, mapping):
+    osm_file = open(OSMFILE, "r")
+    for event, elem in ET.iterparse(osm_file, events=("start",)):
+        if elem.tag == "node" or elem.tag == "way":
+            for tag in elem.iter("tag"):
+                if tag.attrib['k'] in mapping:
+                    tag.attrib['k'] = mapping[tag.attrib['k']]     
+                    print(tag.attrib['k'])
+    osm_file.close()                
+
+update(OSMFILE, mapping)
+```
 
 ## References
 
