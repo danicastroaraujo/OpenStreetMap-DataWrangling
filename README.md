@@ -357,3 +357,5 @@ audit(OSMFILE, key_tags)
 ## References
 
 https://forum.openstreetmap.org/viewtopic.php?id=61604
+
+https://forum.openstreetmap.org/viewtopic.php?id=32037
