@@ -227,6 +227,7 @@ def audit(osmfile, key_tags):
 
 audit(OSMFILE, key_tags)
 ```
+https://github.com/danicastroaraujo/OpenStreetMap-DataWrangling/blob/master/Clean_Postal_Codes.py
 
 ### 5. Inconsistent contact phones
 
