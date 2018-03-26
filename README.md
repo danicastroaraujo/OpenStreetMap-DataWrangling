@@ -26,24 +26,8 @@ Some Examples:
 
 ```R.```, ```Ruo``` and ```Rue``` meaning ```Rua```
 
-
-### 2. Street Type missing 
-
-See some examples bellow. All of them should have the street type before, i.e.,  "Rua …." or "Avenida ….." .
-
-```
-{'15': {'15 de Novembro'},
- '199': {'199'},
- 'Afredo': {'Afredo Ceschiatti'},
- 'Aires': {'Aires Itabaiana'},
- 'Alfredo': {'Alfredo Ceschiatti'},
- 'Apurinãs': {'Apurinãs'},
- 'Arquias': {'Arquias Cordeiro'},
- 'Assis': {'Assis Bueno'},
- 'Augusta': {'Augusta Candiani'}, etc
- ```
  
-### 3. Different key tags with the same meaning for postal codes
+### 2. Different key tags with the same meaning for postal codes
 
 Some examples:
 
@@ -53,13 +37,13 @@ Some examples:
 
 ```addr:zipcode``` vs ```addr:postcode```
 
-### 4. Inconsistent postal codes
+### 3. Inconsistent postal codes
 
 Example:
 
 ```22410-000``` vs ```22410000```
 
-### 5. Inconsistent contact phones
+### 4. Inconsistent contact phones
 
 ```+55-21-9999-9999``` vs ```(21) 9999-9999``` vs ```9999-9999```, etc.
 
@@ -158,9 +142,7 @@ for st_type, ways in st_types.items():
 
 https://github.com/danicastroaraujo/OpenStreetMap-DataWrangling/blob/master/Update_Street_Types.py
 
-### 2. Street Type missing 
-
-### 3. Different key tags with the same meaning for Postcodes
+### 2. Different key tags with the same meaning for Postcodes
 
 ```python
 import xml.etree.cElementTree as ET
@@ -195,7 +177,7 @@ update(OSMFILE, mapping)
 ```
 https://github.com/danicastroaraujo/OpenStreetMap-DataWrangling/blob/master/Similar_Tags.py
 
-### 4. Inconsistent postal codes
+### 3. Inconsistent postal codes
 
 ```python
 import xml.etree.cElementTree as ET
@@ -229,7 +211,7 @@ audit(OSMFILE, key_tags)
 ```
 https://github.com/danicastroaraujo/OpenStreetMap-DataWrangling/blob/master/Clean_Postal_Codes.py
 
-### 5. Inconsistent contact phones
+### 4. Inconsistent contact phones
 
 ```python
 import xml.etree.cElementTree as ET
