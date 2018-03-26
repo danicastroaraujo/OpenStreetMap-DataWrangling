@@ -285,10 +285,10 @@ def update_phone(spell):
     return better_number
 
 def audit(osmfile, key_tags):
-    #Parses file and calls update_postal
+    #Parses file and calls update_phone
     #Args: 
         #osmfile: OpenStreetMap file
-        #key_tags: the tags 'k' corresponding to the postal codes
+        #key_tags: the tags 'k' corresponding to the phone numbers
     osm_file = open(OSMFILE, "r")
     for event, elem in ET.iterparse(osm_file, events=("start",)):
         if elem.tag == "node" or elem.tag == "way":
