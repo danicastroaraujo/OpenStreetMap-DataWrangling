@@ -306,13 +306,13 @@ ways_nodes.cv ......... 37.4 MB
 
 ### Importing csv files to SQLite
  
- ```
+ ```sql
  .mode csv
  .import /Users/daniellacastro/Downloads/nodes.csv nodes
  .schema nodes
  ```
  
- ```
+ ```sql
  CREATE TABLE nodes(
   "b'id'" TEXT,
   "b'lat'" TEXT,
@@ -327,56 +327,38 @@ ways_nodes.cv ......... 37.4 MB
  
 ### Number of Nodes
 
-```
+```sql
  SELECT COUNT(*) from nodes;
 ```
 
-```
+```sql
   1200106
 ```
 
 
 ### Number of Ways
 
-```
+```sql
 SELECT COUNT(*) from ways;
 ```
 
-```
+```sql
 170480
 ```
 
 
-## Numbers of Unique Users
+### Numbers of Unique Users
 
-```
+```sql
 SELECT COUNT(DISTINCT(e."b'uid'"))
 FROM (SELECT "b'uid'" FROM nodes UNION ALL SELECT "b'uid'" FROM WAYS) e;
 ```
 
-```
+```sql
 1691
 ```
 
-## TOP 5 contributing users 
-
-```
-SELECT e."b'user'", COUNT(*) as x
-FROM ( SELECT "b'user'" FROM nodes UNION ALL SELECT "b'user'" FROM ways) e
-GROUP by e."b'user'"
-ORDER by x DESC
-LIMIT 5;
-```
-
-```
-"b'smaprs_import'",183573
-"b'ThiagoPv'",172302
-"b'Alexandrecw'",144411
-"b'AlNo'",125908
-"b'Import Rio'",84042
-```
-
-## Number of shoppings
+### Number of shoppings
 
 ```sql
 SELECT COUNT(*)
@@ -387,6 +369,48 @@ WHERE  "b'key'" = "b'shop'";
 ```sql
 3204
 ```
+
+## Additional Data Exploration
+
+
+### TOP 5 contributing users 
+
+```sql
+SELECT e."b'user'", COUNT(*) as x
+FROM ( SELECT "b'user'" FROM nodes UNION ALL SELECT "b'user'" FROM ways) e
+GROUP by e."b'user'"
+ORDER by x DESC
+LIMIT 5;
+```
+
+```sql
+"b'smaprs_import'",183573
+"b'ThiagoPv'",172302
+"b'Alexandrecw'",144411
+"b'AlNo'",125908
+"b'Import Rio'",84042
+```
+
+### Is there actually only Rio de Janeiro data?
+
+```sql
+SELECT "b'value'", COUNT(*)
+FROM nodes_tags
+WHERE  "b'key'" = "b'city'"
+GROUP BY "b'value'"
+ORDER by COUNT(*) DESC
+LIMIT 5;
+```
+
+```sql
+"b'Rio de Janeiro'",2398
+"b'Niter\xc3\xb3i'",125
+"b'S\xc3\xa3o Jo\xc3\xa3o de Meriti'",31
+"b'Nova Igua\xc3\xa7u'",26
+"b'Duque de Caxias'",25
+```
+
+As I expected, there is also data from other cities (located in Rio de Janeiro State): Niteroi, São João do Meriti, Nova Iguaçu e Duque de Caxias, among others.
 
 
 
