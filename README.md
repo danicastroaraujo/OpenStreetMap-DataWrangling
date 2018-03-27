@@ -287,49 +287,94 @@ https://github.com/danicastroaraujo/OpenStreetMap-DataWrangling/blob/master/Clea
 
 ## Overview of the data
 
+ I then parsed the data from .osm format to .csv, using the algorithm COLAR AQUI . See file sizes below.
+ 
 ### File sizes
 
 rj_map.osm ......... 281 MB
-charlotte.db .......... XX MB
+
 nodes.csv ............. 132.5 MB
+
 nodes_tags.csv ........ 7.1 MB
+
 ways.csv .............. 13.6 MB
+
 ways_tags.csv ......... 19.1 MB
+
 ways_nodes.cv ......... 37.4 MB  
 
-- Number of ```unique users``` that have contributed to the map: **1703**
 
-```python 
-import xml.etree.cElementTree as ET
+### Importing csv files to SQLite
+ 
+ ```
+ .mode csv
+ .import /Users/daniellacastro/Downloads/nodes.csv nodes
+ .schema nodes
+ ```
+ 
+ ```
+ CREATE TABLE nodes(
+  "b'id'" TEXT,
+  "b'lat'" TEXT,
+  "b'lon'" TEXT,
+  "b'user'" TEXT,
+  "b'uid'" TEXT,
+  "b'version'" TEXT,
+  "b'changeset'" TEXT,
+  "b'timestamp'" TEXT
+);
+ ```
+ 
+### Number of Nodes
 
-def get_user(element):
-    #Gets users id from an element 
-    #Arg: element: An element from the OpenStreetMap data
-    #Returns: users: A set of the user ids    
-    users = set([])
-    if 'uid' in element.keys():
-        users.add(element.attrib['uid'])
-    return users
-    
-def process_map(filename):    
-    #Parses document 
-    #Args: filename: OpenStreetMap data
-    #Returns: users: A set of the user ids    
-    users = set([])
-    for _, element in ET.iterparse(filename):
-        users.update(get_user(element))
-    return users
-
-users = process_map('rj_map.osm')
-print(len(users))
+```
+ SELECT COUNT(*) from nodes;
 ```
 
-```python 
-1703
+```
+  1200106
 ```
 
-https://github.com/danicastroaraujo/OpenStreetMap-DataWrangling/blob/master/number_users.py
 
+### Number of Ways
+
+```
+SELECT COUNT(*) from ways;
+```
+
+```
+170480
+```
+
+
+## Numbers of Unique Users
+
+```
+SELECT COUNT(DISTINCT(e."b'uid'"))
+FROM (SELECT "b'uid'" FROM nodes UNION ALL SELECT "b'uid'" FROM WAYS) e;
+```
+
+```
+1691
+```
+
+## TOP 5 contributing users 
+
+```
+SELECT e."b'user'", COUNT(*) as x
+FROM ( SELECT "b'user'" FROM nodes UNION ALL SELECT "b'user'" FROM ways) e
+GROUP by e."b'user'"
+ORDER by x DESC
+LIMIT 5;
+```
+
+```
+"b'smaprs_import'",183573
+"b'ThiagoPv'",172302
+"b'Alexandrecw'",144411
+"b'AlNo'",125908
+"b'Import Rio'",84042
+```
 - Number of ```tags```
 
 ```python 
