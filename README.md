@@ -420,3 +420,5 @@ https://github.com/danicastroaraujo/OpenStreetMap-DataWrangling/blob/master/tag_
 https://forum.openstreetmap.org/viewtopic.php?id=61604
 
 https://forum.openstreetmap.org/viewtopic.php?id=32037
+
+https://arjan-hada.github.io/osm-data-wrangling.html
