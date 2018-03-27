@@ -287,7 +287,7 @@ https://github.com/danicastroaraujo/OpenStreetMap-DataWrangling/blob/master/Clea
 
 ## Overview of the data
 
- I then parsed the data from .osm format to .csv, using the algorithm COLAR AQUI . See file sizes below.
+ I then parsed the data from .osm format to .csv, using the algorithm https://github.com/danicastroaraujo/OpenStreetMap-DataWrangling/blob/master/preparing_database.py. See file sizes below.
  
 ### File sizes
 
