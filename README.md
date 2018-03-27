@@ -287,7 +287,15 @@ https://github.com/danicastroaraujo/OpenStreetMap-DataWrangling/blob/master/Clea
 
 ## Overview of the data
 
-- The file has **280 MB**. 
+### File sizes
+
+rj_map.osm ......... 281 MB
+charlotte.db .......... XX MB
+nodes.csv ............. 132.5 MB
+nodes_tags.csv ........ 7.1 MB
+ways.csv .............. 13.6 MB
+ways_tags.csv ......... 19.1 MB
+ways_nodes.cv ......... 37.4 MB  
 
 - Number of ```unique users``` that have contributed to the map: **1703**
 
