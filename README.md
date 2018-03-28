@@ -413,6 +413,17 @@ LIMIT 5;
 As I expected, there is also data from other cities (located in Rio de Janeiro State): Niteroi, São João do Meriti, Nova Iguaçu e Duque de Caxias, among others.
 
 
+## Additional Ideas
+
+### Automatic validators
+
+Althought there are volunteers regularly checking OpenStreetMap OSM data, there also should be automatic validators in the OpenStreetMap input tool, to avoid problems such as:
+
+- Different/wrong phone numbers formats: there should be a dictionary with the right format per country.
+- Different postcode formats: there also should be a dictionary with the right format per country. Besides, there should be a tool for postcode validating per city, to avoid problems such as I found in Rio de Janeiro data.
+
+Benefits: More accurateness in data, making OpenStreetMaps more reliable. 
+Problems: This could lead to fewer data submissions. 
 
 ## References
 
@@ -421,3 +432,9 @@ https://forum.openstreetmap.org/viewtopic.php?id=61604
 https://forum.openstreetmap.org/viewtopic.php?id=32037
 
 https://arjan-hada.github.io/osm-data-wrangling.html
+
+https://wiki.openstreetmap.org/wiki/OSM_Tasking_Manager/Validating_data
+
+http://luizschiller.com/openstreetmap/
+
+https://github.com/yangju2011/udacity-data-analyst-nanodegree/blob/master/P3-Wrangle-OpenStreetMap-Data/OpenStreetMap%20Project%20Data%20Wrangling%20with%20SQL.pdf
