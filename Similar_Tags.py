@@ -7,6 +7,7 @@ import xml.etree.cElementTree as ET
 #Returns: street_types: A dict with the problem street types
     
 OSMFILE = "rj_map.osm"
+#OSMFILE = "sample_rj_map.osm"
 
 mapping = { 
            "CEP_LD": "zip:right",
