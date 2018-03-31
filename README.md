@@ -10,6 +10,8 @@ https://www.openstreetmap.org/relation/2697338
 
 https://overpass-api.de/api/map?bbox=-43.7997,-23.1157,-43.0959,-22.7129
 
+Sample of the data (k=1000): 
+
 I chose this area because this is the city I currently live in. It would be nice to have the opportunity to contribute to its improvement. 
 
 ## Problems Encountered in the Map
