@@ -34,5 +34,6 @@ def process_map(filename):
     return keys
 
 keys = process_map('rj_map.osm')
+keys = process_map('sample_rj_map.osm')
 pprint.pprint(keys)
 
