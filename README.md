@@ -293,7 +293,9 @@ https://github.com/danicastroaraujo/OpenStreetMap-DataWrangling/blob/master/Clea
  
 ### File sizes
 
-rj_map.osm ......... 281 MB
+rj_map.osm ...........  281 MB
+
+sample_rj_map.osm...... 2.8MB
 
 nodes.csv ............. 132.5 MB
 
