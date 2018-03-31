@@ -8,6 +8,7 @@ import cerberus
 #import schema
 
 OSM_PATH = "rj_map.osm"
+#OSMFILE = "sample_rj_map.osm"
 NODES_PATH = "nodes.csv"
 NODE_TAGS_PATH = "nodes_tags.csv"
 WAYS_PATH = "ways.csv"
