@@ -1,13 +1,14 @@
 import xml.etree.cElementTree as ET
     
 OSMFILE = "rj_map.osm"
-
+#OSMFILE = "sample_rj_map.osm"
 key_tags = ["zip:right", "zip:left", "addr:postcode" ]
 
 def update_postal(spell):
     #Updates postal codes from the format XXXXXXXX to XXXXX-XXX
     #Args: spell: the attrib "v" from address:postcode
     #Returns: better_zip: zip code in the XXXXX-XXX format
+    better_zip = spell
     if len(spell) == 8:
         better_zip = spell[0:5] + "-" + spell[5:8]                        
     return better_zip
