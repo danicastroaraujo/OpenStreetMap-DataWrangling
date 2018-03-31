@@ -1,9 +1,9 @@
 import xml.etree.ElementTree as ET
 
 OSM_FILE = "rj_map.osm"
-SAMPLE_FILE = "sample2.osm"
+SAMPLE_FILE = "sample_rj_map.osm"
 
-k = 1000
+k = 100
 
 def get_element(osm_file, tags=('node', 'way', 'relation')):
     """
@@ -30,4 +30,4 @@ with open(SAMPLE_FILE, 'wb') as output:
         if i % k == 0:
             output.write(ET.tostring(element, encoding='utf-8'))
 
-    output.write('</osm>')
+    #output.write('</osm>')
