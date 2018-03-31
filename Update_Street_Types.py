@@ -3,8 +3,9 @@ from collections import defaultdict
 import re
 
 OSMFILE = "rj_map.osm"
-street_type_re = re.compile(r'^\b\S+\.?', re.IGNORECASE) 
-#Street type is in the begining of the street name
+#OSMFILE = "sample_rj_map.osm"
+street_type_re = re.compile(r'^\b\S+\.?', re.IGNORECASE) #Street type is in the begining of the 
+#street name in portuguese language
 
 expected = ["Rua", "Avenida", "Acesso", "Calçadão", "Ladeira", "Praça", 
             "Travessa", "Via", "Vila", "Estrada", "Auto", "Alameda", "Aterro",
