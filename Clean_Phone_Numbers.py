@@ -1,7 +1,6 @@
 import xml.etree.cElementTree as ET
 
-OSMFILE = "rj_map.osm"
-#OSMFILE = "sample_rj_map.osm"
+OSMFILE = "sample_rj_map.osm"
 
 key_tags = ["phone"]
 
