@@ -54,72 +54,6 @@ Example:
 ### 1. Over-abbreviated / Inconsistent street names 
 
 ```python
-import xml.etree.cElementTree as ET
-from collections import defaultdict
-import re
-
-OSMFILE = "rj_map.osm"
-street_type_re = re.compile(r'^\b\S+\.?', re.IGNORECASE) 
-#Street type is in the begining of the street name
-
-expected = ["Rua", "Avenida", "Acesso", "Calçadão", "Ladeira", "Praça", 
-            "Travessa", "Via", "Vila", "Estrada", "Auto", "Alameda", "Aterro",
-            "Beco", "Boulevard", "Caminho", "Largo", "Parque", "Praia", 
-            "Rodovia", "Quadra", "Condominio", "Terminal"]
-
-mapping = { "Av.": "Avenida",
-           "Av": "Avenida",
-           "av.": "Avenida",
-           "Est.": "Estrada",
-           "Estr.": "Estrada",
-           "estrada": "Estrada",
-           "PLAZA": "Praça",
-           "Pca": "Praça",
-           "Praca": "Praça",
-           "Pça": "Praça",
-           "Pça.": "Praça",
-           "R.": "Rua",
-           "Rod.": "Rodovia",
-           "Ruas": "Rua",
-           "Rue": "Rua",
-           "Ruo": "Rua" ,
-           "rua": "Rua",
-           "vila": "Vila"
-            }
-
-def audit_street_type(street_types, street_name):
-    #Creates a dict with all the street types that are not expected
-    #Args:
-        #street_types: a dict of sets 
-        #street_name: a street name
-    #Returns: street_types: A dict with the problem street types
-    m = street_type_re.search(street_name)
-    if m:
-        street_type = m.group()
-        if street_type not in expected:
-            street_types[street_type].add(street_name)
-    return street_types
-
-def is_street_name(elem):
-    #Returns true if the element key is "addr:street"
-    #Args: elem: element of the OpenStreetMap data
-    #Returns: true (is street) or false (is not street)
-    return (elem.attrib['k'] == "addr:street")
-
-def audit(osmfile):
-    #Parses file and calls audit_street_type function
-    #Args: osmfile: OpenStreetMap data
-    #Returns: street_types: A dict with the problem street types
-    osm_file = open(osmfile, "r")
-    street_types = defaultdict(set)
-    for event, elem in ET.iterparse(osm_file, events=("start",)):
-        if elem.tag == "node" or elem.tag == "way":
-            for tag in elem.iter("tag"):
-                if is_street_name(tag):
-                    audit_street_type(street_types, tag.attrib['v'])
-    osm_file.close()
-    return street_types
-
 def update_name(name, mapping):
     #Corrects the not expected Street types
     #Args: 
@@ -132,14 +66,6 @@ def update_name(name, mapping):
         better_street_type = mapping[m.group()]
         better_name = street_type_re.sub(better_street_type, name)
     return better_name
-
-st_types = audit(OSMFILE)
-for st_type, ways in st_types.items():
-    for name in ways:
-        try: #try except was used because of the street names that had no type
-            better_name = update_name(name, mapping)
-        except KeyError:
-            pass
 ```
 
 https://github.com/danicastroaraujo/OpenStreetMap-DataWrangling/blob/master/Update_Street_Types.py
@@ -147,47 +73,19 @@ https://github.com/danicastroaraujo/OpenStreetMap-DataWrangling/blob/master/Upda
 ### 2. Different key tags with the same meaning for Postcodes
 
 ```python
-import xml.etree.cElementTree as ET
 
-#Parses file and corrects the not expected zip keys
-#Args: 
-    #osmfile: OpenStreetMap data
-    #mapping: mapping dict with the problem types and the write ones
-#Returns: street_types: A dict with the problem street types
-    
-OSMFILE = "rj_map.osm"
+def update_tags(tag, mapping):
+    postal_tag = tag.attrib['k']
+    if tag.attrib['k'] in mapping:
+        postal_tag = mapping[tag.attrib['k']]     
+    return postal_tag  
 
-mapping = { 
-           "CEP_LD": "zip:right",
-           "CEP_LE": "zip:left",
-           "cep:par": "zip:right",
-           "cep:impar": "zip:left",
-           "addr:zipcode": "addr:postcode"
-            }
-
-def update(osmfile, mapping):
-    osm_file = open(OSMFILE, "r")
-    for event, elem in ET.iterparse(osm_file, events=("start",)):
-        if elem.tag == "node" or elem.tag == "way":
-            for tag in elem.iter("tag"):
-                if tag.attrib['k'] in mapping:
-                    tag.attrib['k'] = mapping[tag.attrib['k']]     
-                    print(tag.attrib['k'])
-    osm_file.close()                
-
-update(OSMFILE, mapping)
 ```
 https://github.com/danicastroaraujo/OpenStreetMap-DataWrangling/blob/master/Similar_Tags.py
 
 ### 3. Inconsistent postal codes
 
-```python
-import xml.etree.cElementTree as ET
-    
-OSMFILE = "rj_map.osm"
-
-key_tags = ["zip:right", "zip:left", "addr:postcode" ]
-
+```python    
 def update_postal(spell):
     #Updates postal codes from the format XXXXXXXX to XXXXX-XXX
     #Args: spell: the attrib "v" from address:postcode
@@ -195,43 +93,12 @@ def update_postal(spell):
     if len(spell) == 8:
         better_zip = spell[0:5] + "-" + spell[5:8]                        
     return better_zip
-
-def audit(osmfile, key_tags):
-    #Parses file and calls update_postal
-    #Args: 
-        #osmfile: OpenStreetMap file
-        #key_tags: the tags 'k' corresponding to the postal codes
-    osm_file = open(OSMFILE, "r")
-    for event, elem in ET.iterparse(osm_file, events=("start",)):
-        if elem.tag == "node" or elem.tag == "way":
-            for tag in elem.iter("tag"):
-                if tag.attrib['k'] in key_tags:
-                    update_postal(tag.attrib['v'])                    
-    osm_file.close()                
-
-audit(OSMFILE, key_tags)
 ```
 https://github.com/danicastroaraujo/OpenStreetMap-DataWrangling/blob/master/Clean_Postal_Codes.py
 
 ### 4. Inconsistent contact phones
 
 ```python
-import xml.etree.cElementTree as ET
-
-OSMFILE = "rj_map.osm"
-
-key_tags = ["phone" ]
-
-def clean_phone(spell):
-    #Removes special characters between phone numbers for uniformization
-    fillers = [' ', '+', '-', '(', ')']
-    disjunctions = [ '/', ',', 'ou' ]
-    for i in range(len(fillers)):
-        spell = spell.replace(fillers[i],'')
-    for j in range(len(disjunctions)):
-        spell = spell.replace(disjunctions[j],';')
-    return spell
-
 def update_phone(spell):
     #Updates phones to the format 
     #phone=+<country code> <area code> <local number>
@@ -268,21 +135,6 @@ def update_phone(spell):
     else:
         print(spell, len(spell))
     return better_number
-
-def audit(osmfile, key_tags):
-    #Parses file and calls update_phone
-    #Args: 
-        #osmfile: OpenStreetMap file
-        #key_tags: the tags 'k' corresponding to the phone numbers
-    osm_file = open(OSMFILE, "r")
-    for event, elem in ET.iterparse(osm_file, events=("start",)):
-        if elem.tag == "node" or elem.tag == "way":
-            for tag in elem.iter("tag"):
-                if tag.attrib['k'] in key_tags:
-                    update_phone(tag.attrib['v'])                    
-    osm_file.close()     
-
-audit(OSMFILE, key_tags)
 ```
 
 https://github.com/danicastroaraujo/OpenStreetMap-DataWrangling/blob/master/Clean_Phone_Numbers.py
