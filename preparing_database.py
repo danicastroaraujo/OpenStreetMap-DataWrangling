@@ -5,10 +5,13 @@ import pprint
 import re
 import xml.etree.cElementTree as ET
 import cerberus
-#import schema
+from Update_Street_Types import update_name
+from Clean_Postal_Codes import update_postal
+from Similar_Tags import update_tags
+from Clean_Phone_Numbers import update_phone
+from schema import schema
 
-OSM_PATH = "rj_map.osm"
-#OSMFILE = "sample_rj_map.osm"
+OSM_PATH = "sample_rj_map.osm"
 NODES_PATH = "nodes.csv"
 NODE_TAGS_PATH = "nodes_tags.csv"
 WAYS_PATH = "ways.csv"
@@ -19,68 +22,7 @@ LOWER_COLON = re.compile(r'^([a-z]|_)+:([a-z]|_)+')
 PROBLEMCHARS = re.compile(r'[=\+/&<>;\'"\?%#$@\,\. \t\r\n]')
 
 
-schema = {
-    'node': {
-        'type': 'dict',
-        'schema': {
-            'id': {'required': True, 'type': 'integer', 'coerce': int},
-            'lat': {'required': True, 'type': 'float', 'coerce': float},
-            'lon': {'required': True, 'type': 'float', 'coerce': float},
-            'user': {'required': True, 'type': 'string'},
-            'uid': {'required': True, 'type': 'integer', 'coerce': int},
-            'version': {'required': True, 'type': 'string'},
-            'changeset': {'required': True, 'type': 'integer', 'coerce': int},
-            'timestamp': {'required': True, 'type': 'string'}
-        }
-    },
-    'node_tags': {
-        'type': 'list',
-        'schema': {
-            'type': 'dict',
-            'schema': {
-                'id': {'required': True, 'type': 'integer', 'coerce': int},
-                'key': {'required': True, 'type': 'string'},
-                'value': {'required': True, 'type': 'string'},
-                'type': {'required': True, 'type': 'string'}
-            }
-        }
-    },
-    'way': {
-        'type': 'dict',
-        'schema': {
-            'id': {'required': True, 'type': 'integer', 'coerce': int},
-            'user': {'required': True, 'type': 'string'},
-            'uid': {'required': True, 'type': 'integer', 'coerce': int},
-            'version': {'required': True, 'type': 'string'},
-            'changeset': {'required': True, 'type': 'integer', 'coerce': int},
-            'timestamp': {'required': True, 'type': 'string'}
-        }
-    },
-    'way_nodes': {
-        'type': 'list',
-        'schema': {
-            'type': 'dict',
-            'schema': {
-                'id': {'required': True, 'type': 'integer', 'coerce': int},
-                'node_id': {'required': True, 'type': 'integer', 'coerce': int},
-                'position': {'required': True, 'type': 'integer', 'coerce': int}
-            }
-        }
-    },
-    'way_tags': {
-        'type': 'list',
-        'schema': {
-            'type': 'dict',
-            'schema': {
-                'id': {'required': True, 'type': 'integer', 'coerce': int},
-                'key': {'required': True, 'type': 'string'},
-                'value': {'required': True, 'type': 'string'},
-                'type': {'required': True, 'type': 'string'}
-            }
-        }
-    }
-}
-            
+
 SCHEMA = schema
 
 # Make sure the fields order in the csvs matches the column order in the 
@@ -104,7 +46,34 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
     way_attribs = {}
     way_nodes = []
     tags = []  # Handle secondary tags the same way for both node and way elements
-    
+    mapping = { "Av.": "Avenida",
+                               "Av": "Avenida",
+                               "av.": "Avenida",
+                               "Est.": "Estrada",
+                               "Estr.": "Estrada",
+                               "estrada": "Estrada",
+                               "PLAZA": "Praça",
+                               "Pca": "Praça",
+                               "Praca": "Praça",
+                               "Pça": "Praça",
+                               "Pça.": "Praça",
+                               "R.": "Rua",
+                               "Rod.": "Rodovia",
+                               "Ruas": "Rua",
+                               "Rue": "Rua",
+                               "Ruo": "Rua" ,
+                               "rua": "Rua",
+                               "vila": "Vila"
+                                }
+    mapping_tags = { 
+           "CEP_LD": "zip:right",
+           "CEP_LE": "zip:left",
+           "cep:par": "zip:right",
+           "cep:impar": "zip:left",
+           "addr:zipcode": "addr:postcode"
+            }
+    key_postal = ["zip:right", "zip:left", "addr:postcode" ]
+
     #List of attribs that are useful in nodes and way
     attribs_nodes = ["id", "user", "uid", "version", "lat", "lon", "timestamp",
                      "changeset"]
@@ -132,6 +101,26 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
             node_child['key'] = child.get('k')
             local_colon = node_child['key'].find(':')
             
+            ## Update Street Names
+            if node_child['key'] == 'addr:street':   
+                try: #try except was used because of the street names that had no type
+                    node_child['value'] = update_name(node_child['value'], mapping)
+                except KeyError:
+                    pass
+            
+            ## Update postal tags
+            if node_child['key'] in mapping_tags:
+                node_child['key'] = update_tags(child, mapping_tags)
+
+            
+            ## Update postal numbers
+            if node_child['key'] in key_postal:
+                node_child['value'] = update_postal(node_child['value'])
+
+            ## Update phone numbers
+            if node_child['key'] == 'phone':
+                node_child['value'] = update_phone(node_child['value'])
+                
             if local_colon > 0:
                 aux = node_child['key']
 
@@ -185,12 +174,34 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
                 #value: the tag "v" attribute value
                 way_child['value'] = child.get('v')
 
+                
                 #key: the full tag "k" attribute value if no colon is present 
                 #or the characters after 
                 #the colon if one is.
                 way_child['key'] = child.get('k')
-                local_colon = way_child['key'].find(':')
 
+                local_colon = way_child['key'].find(':')
+                
+                ## Update Street Names
+                if way_child['key'] == 'addr:street':   
+                    try: #try except was used because of the street names that had no type
+                        way_child['value'] = update_name(way_child['value'], mapping)
+                    except KeyError:
+                        pass
+                    
+                ## Update postal tags
+                if way_child['key'] in mapping_tags:
+                    way_child['key'] = update_tags(child, mapping_tags)
+
+                
+                ## Update postal numbers
+                if way_child['key'] in  key_postal:
+                    way_child['value'] = update_postal(way_child['value'])
+                
+                ## Update phone numbers
+                if way_child['key'] == 'phone':
+                    way_child['value'] = update_phone(way_child['value'])
+            
                 if local_colon > 0:
                     aux = way_child['key']
                     way_child['key'] = aux[local_colon+1:len(aux)]
@@ -203,6 +214,8 @@ def shape_element(element, node_attr_fields=NODE_FIELDS, way_attr_fields=WAY_FIE
                 else:
                     way_child['type'] = "regular"
                     
+
+
                 tags.append(way_child.copy())
                 
         return {'way': way_attribs, 'way_nodes': way_nodes, 'way_tags': tags}
