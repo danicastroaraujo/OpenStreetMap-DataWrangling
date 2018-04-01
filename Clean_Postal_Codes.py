@@ -1,7 +1,7 @@
 import xml.etree.cElementTree as ET
     
 OSMFILE = "rj_map.osm"
-#OSMFILE = "sample_rj_map.osm"
+
 key_tags = ["zip:right", "zip:left", "addr:postcode" ]
 
 def update_postal(spell):
@@ -13,7 +13,7 @@ def update_postal(spell):
         better_zip = spell[0:5] + "-" + spell[5:8]                        
     return better_zip
 
-def audit(osmfile, key_tags):
+def audit_postal(osmfile, key_tags):
     #Parses file and calls update_postal
     #Args: 
         #osmfile: OpenStreetMap file
@@ -23,8 +23,9 @@ def audit(osmfile, key_tags):
         if elem.tag == "node" or elem.tag == "way":
             for tag in elem.iter("tag"):
                 if tag.attrib['k'] in key_tags:
-                    update_postal(tag.attrib['v'])                    
+                    better_zip = update_postal(tag.attrib['v'])    
+                    tag.attrib['v'] = better_zip
     osm_file.close()                
 
-audit(OSMFILE, key_tags)
+audit_postal(OSMFILE, key_tags)
 
